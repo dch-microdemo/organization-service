@@ -16,7 +16,7 @@ logging:
     org.springframework.web: WARN
     com.diego: DEBUG
 server:
-  port: 8081
+  port: 7081
 signing:
   key: 1234
 opentracing:
