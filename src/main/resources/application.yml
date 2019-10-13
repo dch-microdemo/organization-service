@@ -1,14 +1,23 @@
 spring:
   application:
     name: organizationservice
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination: orgChangeTopic
+          content-type: application/json
+      kafka:
+        binder:
+          brokers: localhost
   jpa:
     hibernate:
       ddl-auto: none
-  kafka:    
-    producer:
-      bootstrap-servers: localhost:9092
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer        
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#  kafka:    
+#    producer:
+#      bootstrap-servers: localhost:9092
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer        
+#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 #Setting the logging levels for the service
 logging:
   level:
@@ -22,5 +31,5 @@ signing:
 opentracing:
   jaeger:
     udp-sender:
-      host: 192.168.99.100
+      host: 192.168.99.101
       port: 6831

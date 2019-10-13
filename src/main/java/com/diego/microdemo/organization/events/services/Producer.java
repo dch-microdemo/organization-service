@@ -3,6 +3,7 @@ package com.diego.microdemo.organization.events.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
@@ -15,8 +16,11 @@ import com.diego.microdemo.organization.events.model.OrganizationChangeModel;
 public class Producer {
 	private static final Logger logger = LoggerFactory.getLogger(Producer.class);
 	private static final String TOPIC = "orgChangeTopic";
+	//@Autowired
+	//private KafkaTemplate<String, OrganizationChangeModel> kafkaTemplate;
+	
 	@Autowired
-	private KafkaTemplate<String, OrganizationChangeModel> kafkaTemplate;
+	private Source source;
 
     public void publishOrgChange(String action,String orgId){
         logger.debug("Sending Kafka message {} for Organization Id: {}", action, orgId);
@@ -26,11 +30,11 @@ public class Producer {
                  orgId);
          Message<OrganizationChangeModel> message = MessageBuilder
                  .withPayload(change)
-                 .setHeader(KafkaHeaders.TOPIC, TOPIC)
+                 //.setHeader(KafkaHeaders.TOPIC, TOPIC)
                  .build();
          logger.info(String.format("$$ -> Producing message --> %s", message));
-         this.kafkaTemplate.send(message);
-
+         //this.kafkaTemplate.send(message);
+         source.output().send(message);
      }
 	
 }
